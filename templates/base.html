@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Covid-19 Simulation</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+        <link rel='stylesheet' href="{{url_for('static', filename='css/range.css')}}"></link>
+        
+    </head>
+    <body>
+        {% block body %}
+
+        {% endblock %}
+    </body>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <script src="{{url_for('static', filename='js/Main.js')}}"></script>
+    <script src="{{url_for('static', filename='js/Simulation.js')}}"></script>
+    <script src="{{url_for('static', filename='js/range.js')}}"></script>
+    
+</html>
