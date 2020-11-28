@@ -1,8 +1,18 @@
 
+var times, chart, contains, loader, sim;
+
+var button_group = document.getElementById('day_buttons')
+var dates_range = document.getElementById('dates_range')
+
+var simulation;
+
+//utility function to force timeout
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 function create_viz(){
     // var day1 = data[0]
     // console.log(day1)
-    const simulation = d3.forceSimulation()
+    simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody())
     .force("link", d3.forceLink().id(d => d.id))
     .force("x", d3.forceX())
@@ -34,41 +44,40 @@ function create_viz(){
     // invalidation.then(() => simulation.stop())
     return Object.assign(svg.node(), {
         update({nodes, links}) {
-            setTimeout(function(){
-                // Make a shallow copy to protect against mutation, while
-                // recycling old nodes to preserve position and velocity.
-                const old = new Map(node.data().map(d => [d.id, d]));
-                nodes = nodes.map(d => Object.assign(old.get(d.id) || {}, d));
-                links = links.map(d => Object.assign({}, d));
+          // Make a shallow copy to protect against mutation, while
+          // recycling old nodes to preserve position and velocity.
+          const old = new Map(node.data().map(d => [d.id, d]));
+          nodes = nodes.map(d => Object.assign(old.get(d.id) || {}, d));
+          links = links.map(d => Object.assign({}, d));
 
-                node = node
-                  .data(nodes, d => d.id)
-                  .join(enter => enter.append("circle")
-                    .attr("r", 5)
-                    .style('fill', function(d){
-                      if(d.infected){
-                        return 'red'
-                      }
-                      return "green"
-                    })
-                  //   .call(drag(simulation))
-                    .call(node => node.append("title").text(d => d.id)));
-          
-                link = link
-                  .data(links, d => [d.source, d.target])
-                  .join(enter => enter.append("line")
-                    .attr("stroke", function(d){
-                      if(d.masked)
-                        return 'pink'
-                      return "#999"
-                    })
-                  );
-          
-                simulation.nodes(nodes);
-                simulation.force("link").links(links);
-                simulation.alpha(1).restart().tick();
-                ticked(); // render now!
-            }, 1000);
+          node = node
+            .data(nodes, d => d.id)
+            .join(enter => enter.append("circle")
+              .attr("r", 5)
+              .style('fill', function(d){
+                if(d.infected){
+                  return 'red'
+                }
+                return "green"
+              })
+            //   .call(drag(simulation))
+              .call(node => node.append("title").text(d => d.id)));
+    
+          link = link
+            .data(links, d => [d.source, d.target])
+            .join(enter => enter.append("line")
+              .attr("stroke", function(d){
+                if(d.masked)
+                  return 'pink'
+                return "#999"
+              })
+            );
+    
+          simulation.nodes(nodes);
+          simulation.force("link").links(links);
+          simulation.alpha(1).restart().tick();
+          ticked(); // render now!
+      
          
         }
     });
@@ -77,9 +86,10 @@ function create_viz(){
 var update = function(data, contains, time, chart){
     const nodes = data.nodes.filter(d => contains(d, time));
     const links = data.links.filter(d => contains(d, time));
+    
     chart.update({nodes, links});
 }
-
+var data;
 //define dimensions for svg
 var width = 887,
 height = 500;
@@ -124,38 +134,51 @@ fetch('/create_dataset', {
 });
 
 
-function visualization(data){
-    const chart = create_viz();
+function visualization(d){
+    data=d
+    chart = create_viz();
 
-    const contains = ({start, end}, time) => start <= time && time < end
+    contains = ({start, end}, time) => start <= time && time < end
 
-    const times = d3.scaleTime()
+    times = d3.scaleTime()
     .domain([d3.min(data.nodes, d => d.start), d3.max(data.nodes, d => d.end)])
     .ticks(1000)
     .filter(time => data.nodes.some(d => contains(d, time)))
     
-    var loader = document.getElementById('loader')
+    loader = document.getElementById('loader')
     loader.style.display = 'none';
 
-    var sim = document.getElementById('simulation')
+    sim = document.getElementById('simulation')
     sim.style.display = 'block';
 
-    var button_group = document.getElementById('day_buttons')
+    var play_pause = document.getElementById('play_pause');
+    play_pause.disabled = false
+    
+    button_group.min = 0
+    button_group.max= times.length-1
 
-    var count =0
-    while(count<times.length){
-      update(data, contains, times[count], chart)
-      count = count+1
-
-      //add buttons according to days
-      var button = document.createElement('option')
-      // button.className='ui button'
-      button.value =times[count]
-      button.textContent = times[count]
-      button_group.appendChild(button)
-    }
+    run_simulation()
+    
       
 }
 
+async function run_simulation(time=null){
+    if(time){
+      dates_range.innerHTML=times[time]
+      update(data, contains, times[time], chart)
+    }else{
+      var count =0
+      while(count<times.length){
+        await delay(150);
+        update(data, contains, times[count], chart)
+        dates_range.innerHTML=times[count]
+        button_group.value = count
+        count = count+1
+      }
+    }
+    
+}
 
 
+//TODO: 1) add onclick listener for the dates dropdown [use the onclick to run/pause the simulation]
+// 2) add form submission for the test features (do this in the main.js file??) 3) create heatmap and div for small charts with popups 

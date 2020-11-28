@@ -2,7 +2,7 @@
 
 {% block body%}
     
-    <h1 class="ui header" align="center">Covid Simulation</h1>
+    <h1 class="ui header" align="center" style="color: rosybrown;">Covid-19 Propagation Simulation</h1>
     <div class="ui divider"></div>
     <div class="ui two column padded grid">
         <div class="row">
@@ -63,28 +63,50 @@
                 </div>
             </div>
             <div class="twelve wide column">
-                <div class="field">
-                    <label>Time taken for results</label>
-                    <select class="ui fluid dropdown" id="day_buttons">
-                      
-                    </select>
-                </div>
-                <div class="field">
-                    <div class="ui segment" id='loader' style="height: 500px;">
-                        <div class="ui active dimmer" style="height: 500px;">
-                          <div class="ui huge text loader" style="height: 500px;">Loading</div>
-                        </div>
-                        <p></p>
-                    </div>
-                </div>
                 
+                    <div class="two fields">
+                        <label id='dates_range'>Dates</label>
+                        <div class="field">
+                            <input type="range" id="day_buttons" min=1, max=500 value="1" style="width: 500px;">
+                            </input>
+                        
+                        </div>
+                        
+                        <div class="field" hidden>
+                            <label>Play/Pause</label>
+                            <button class="ui icon button" id='play_pause' type="button" value="pause" disabled>
+                                <i class="pause icon" id='playicon'></i>
+                            </button>
+                        </div>
+                        
+                    </div>
+
+                <div class="ui segment" id='loader' style="height: 500px;">
+                    <div class="ui active dimmer" style="height: 500px;">
+                        <div class="ui huge text loader" style="height: 500px;">Loading</div>
+                    </div>
+                    <p></p>
+                </div>
+                    
                 <div id='simulation' style="display: none; background-color: black;"></div>
             </div>  
         </div>
-        <div class='row'>
-            <h2 class="ui header" align="center" >Insert smaller charts here</h2>
-        </div>
-
     </div>
-    
+    <!-- grid for smaller charts -->
+    <div class="ui four column grid">
+        <div class="row">
+          <div class="column" id="heatmap">
+            <h2 class="ui header" align="center" style="color: rosybrown;">Infection rates Heatmap</h2>
+          </div>
+          <div class="column">
+            <h2 class="ui header" align="center" style="color: rosybrown;">Daily Cases</h2>
+          </div>
+          <div class="column">
+            <h2 class="ui header" align="center" style="color: rosybrown;">Total Cases</h2>
+          </div>
+          <div class="column">
+            <h2 class="ui header" align="center" style="color: rosybrown;">Spread Probability</h2>
+          </div>
+        </div>
+    </div>
 {%endblock%}
