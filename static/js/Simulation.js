@@ -13,7 +13,7 @@ function create_viz(){
     let link = svg.append("g")
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 3)
     .selectAll("line");
 
     let node = svg.append("g")
@@ -44,7 +44,7 @@ function create_viz(){
                 node = node
                   .data(nodes, d => d.id)
                   .join(enter => enter.append("circle")
-                    .attr("r", 10)
+                    .attr("r", 5)
                     .style('fill', function(d){
                       if(d.infected){
                         return 'red'
@@ -56,7 +56,13 @@ function create_viz(){
           
                 link = link
                   .data(links, d => [d.source, d.target])
-                  .join("line");
+                  .join(enter => enter.append("line")
+                    .attr("stroke", function(d){
+                      if(d.masked)
+                        return 'pink'
+                      return "#999"
+                    })
+                  );
           
                 simulation.nodes(nodes);
                 simulation.force("link").links(links);

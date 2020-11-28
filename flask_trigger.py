@@ -25,9 +25,9 @@ def ping_pong():
 @app.route('/create_dataset', methods=['GET'])
 def trigger_dataset():
     if request.method =='GET':
-    # simulation = Simulation()
-    # simulation.generateDataset()
-    # data = simulation.getInfections()
+        # simulation = Simulation()
+        # simulation.generateDataset()
+        # data = simulation.getInfections()
         # getJson()
         return send_from_directory(os.getcwd(), filename='dataJson.json')
 
