@@ -6,11 +6,10 @@
     <div class="ui divider"></div>
     <div class="ui two column padded grid">
         <div class="row">
-            <div class="six wide column">
+            <div class="four wide column">
                 <div id='controls'>
                     <form class="ui form">
                         <h4 class="ui dividing header">Testing Features</h4>
-                        
                         <div class="two fields">
                             <div class="field">
                                 <label>Time taken for results</label>
@@ -20,63 +19,64 @@
                                   <option value="48">48hrs</option>
                                   <option value="72">72hrs</option>
                                   <option value="168">1 week</option>
-                            </select>
-                              </div>
-                              <div class="field">
+                                </select>
+                            </div>
+                            <div class="field">
                                 <label>% of False Negative Results</label>
                                 <select class="ui fluid dropdown">
                                   <option value="1">1%</option>
                                   <option value="5">5%</option>
                                   <option value="10">10%</option>
-                            </select>
-                              </div>
+                                </select>
+                            </div>
                         </div>
+
                         <h4 class="ui dividing header">Personal Measures</h4>
-                            <div class="seven wide field"></div>
-                                
-                                <div class="two fields">
-                                    <div class="field">
-                                        <label>Days Between Tests</label>
-                                        <div class="field">
-                                            <select class="ui fluid search dropdown" name="days_between_tests">
-                                            <option value="24">24 hours</option>
-                                            <option value="168">1 week</option>
-                                            <option value="336">2 weeks</option>
-                                            <option value="672">1 month</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label>Prob. of Masks</label>
-                                        <div class='ui input' id='mask_range'>
-                                            <input type="range" min ='1' max='100', value='50' id="mask_range_input">
-                                            <p id='slider_val'>50%</p>
-                                        </div>
-                                        <input type='text' value='50' id='slider_value' width="10px" hidden>
-                                    <div class="field">
-                                        
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>Quarantine enforced</label>
-                                    
-                                <div class="field">
-                                    <select class="ui fluid search dropdown" name="quarantine">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Days Between Tests</label>
+                                    <select class="ui fluid search dropdown" name="days_between_tests">
+                                        <option value="24">24 hours</option>
+                                        <option value="168">1 week</option>
+                                        <option value="336">2 weeks</option>
+                                        <option value="672">1 month</option>
+                                    </select>
+                            </div>
+                            <div class="field">
+                                <label>Quarantine enforced</label>
+                                <select class="ui fluid search dropdown" name="quarantine">
                                     <option value="yes">Yes</option>
                                     <option value="no">No</option>
-                                    </select>
-                                </div>
+                                </select>
                             </div>
-                            </div>
-                        
+                        </div>
+                        <div class="field">
+                            <label>Prob. of Masks</label>
+                            <div class='ui input' id='mask_range'>
+                                <input type="range" min ='1' max='100', value='50' id="mask_range_input">
+                                <p id='slider_val'>50%</p>
+                                <input type='text' value='50' id='slider_value' width="10px" hidden>  
+                            </div>    
+                        </div>
                         <div class="ui button" tabindex="0">Run Simulation</div>
                     </form>
                 </div>
-              </div>
-              <div class="column">
-                <div id='simulation'></div>
-                <h2 class="ui header" align="center" >Insert simulation graph here</h2>
-              </div>
+            </div>
+            <div class="twelve wide column">
+                <div class="field">
+                    <label>Time taken for results</label>
+                    <select class="ui fluid dropdown" id="day_buttons">
+                      
+                    </select>
+                </div>
+                <div class="ui segment" id='loader'>
+                    <div class="ui active dimmer">
+                      <div class="ui huge text loader">Loading</div>
+                    </div>
+                    <p></p>
+                </div>
+                <div id='simulation' style="display: none;"></div>
+            </div>  
         </div>
         <div class='row'>
             <h2 class="ui header" align="center" >Insert smaller charts here</h2>

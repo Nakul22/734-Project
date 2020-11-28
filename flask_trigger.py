@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 from covidsim import Simulation
 from DataCleaning import getJson
+import os
 
 # configuration
 DEBUG = True
@@ -27,7 +28,8 @@ def trigger_dataset():
     # simulation = Simulation()
     # simulation.generateDataset()
     # data = simulation.getInfections()
-        return getJson()
+        # getJson()
+        return send_from_directory(os.getcwd(), filename='dataJson.json')
 
 
 if __name__ == '__main__':
