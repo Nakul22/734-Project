@@ -1,4 +1,5 @@
 
+//create onclick function on the visualization so that a user can view a larger version of the visualization in a modal
 var heatmap = document.getElementById('heatmap')
 heatmap.onclick = function(){
 
@@ -81,20 +82,23 @@ d3.csv("heatmap.csv").then(function(d) {
 });
 
 function draw_heatmap(timeperiod){
+  //given the time period, update the current view for this visualization
   currtime = timeperiod;
   var d = cleandata(heatmap_data, timeperiod)
   update_heatmap(d)
 }
 
 function heatmap_modal(){
-      
+  //updates the visualization for the heatmap that shows up in the modal
       // set the dimensions and margins of the graph
       var margin = {top: 30, right: 30, bottom: 30, left: 30},
         heatmap_width = 950 - margin.left - margin.right,
         heatmap_height = 950 - margin.top - margin.bottom;
 
+     
+      d3.select('#open_image').selectAll('*').remove(); //remove previous content of div first
+      
       // append the heatmap_svg object to the body of the page
-      d3.select('#open_image').selectAll('*').remove();
       heatmap_modal_svg = d3.select("#open_image")
       .append("svg")
         .attr("width", heatmap_width + margin.left + margin.right)
@@ -188,6 +192,7 @@ function heatmap_modal(){
 }
 
 function update_heatmap(data){
+  //updates the main heatmap in the supplementary visualizations section
   myColor.domain([0, d3.max(data, function(d){
     return d.Value
   })]);
@@ -227,6 +232,7 @@ function update_heatmap(data){
 }
 
 function getHour(d){
+  //returns the hour as a string
   if(d===1){
     return '1am'
   }
@@ -303,6 +309,7 @@ function getHour(d){
 }
 
 function getDay(d){
+  //returns the day as a string
   if(d===1){
     return 'Mon'
   }
@@ -327,8 +334,10 @@ function getDay(d){
 }
 
 function cleandata(data, timeperiod=null){
+  //used to clean the data into the appropriate format for visualization
   var cleaned =[]
   if(timeperiod){
+    //if timeperiod is specified, then only select the data that is either before or on the date passed in
     data.forEach(element => {
       if(element.Day<=timeperiod){
         cleaned.push(
@@ -337,6 +346,7 @@ function cleandata(data, timeperiod=null){
       }
     });
   }else{
+    //if no time period is specified, then this is the first time coming across data so change day to actual date object and then return
     data.forEach(element => {
       var fdate = new Date(year=2020, month=00, date=element.Day)
       cleaned.push(
