@@ -35,6 +35,16 @@ def getJson():
             # print(row['day'])
             person1['start'] = datetime(year=2020, month=1, day=row['day']+1, hour=row['hour'])
             person1['end'] = datetime(year=2020, month=1, day=row['day']+1, hour=row['hour'], minute=15)
+           
+            
+             #iterate through add data from the test results
+            for tindex, trow in test_results.iterrows():
+                if person1['id'] == trow['user'] and person1['start'].day == trow['done_day'] :
+                    person1['tested'] = True
+                
+                if person1['id'] == trow['user'] and person1['start'].day == trow['result_day']:
+                    person1['test_result'] = 'positive'
+                    person1['status'] = trow['status']
             data['nodes'].append(person1)
             flag_i=True
 
@@ -49,9 +59,18 @@ def getJson():
             else:
                 person2['infected'] = False
 
+            #iterate through and add data from the test results
+            for tindex, trow in test_results.iterrows():
+                if person2['id'] == trow['user'] and person2['start'].day == trow['done_day'] :
+                    person2['tested'] = True
+                
+                if person2['id'] == trow['user'] and person2['start'].day == trow['result_day']:
+                    person2['test_result'] = 'positive'
+                    person2['status'] = trow['status']
+                
             data['nodes'].append(person2)
             flag_e=True
-
+        
         #add data to the links dict
         if flag_e or flag_i:
             link={}
@@ -63,19 +82,7 @@ def getJson():
             link['start'] = datetime(year=2020, month=1, day=row['day']+1, hour=row['hour'])
             link['end'] = datetime(year=2020, month=1, day=row['day']+1, hour=row['hour'], minute=15)
             data['links'].append(link)
-
-
-    #iterate through the nodes and add data from the test results
-    for index, row in test_results.iterrows():
-        for index, node in enumerate(data['nodes']):
-            val = node
-            if node['id'] == row['user'] and node['start'].day == row['done_day'] :
-                val['tested'] = True
-            
-            if node['id'] == row['user'] and node['start'].day == row['result_day']:
-                val['test_result'] = 'positive'
-                val['status'] = row['status']
-            data['nodes'][index]= val
+        
 
     with open('dataJson.json', 'w') as outfile:
         outfile.write(json.dumps(data, default=converter))

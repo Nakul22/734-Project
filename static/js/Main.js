@@ -34,3 +34,4 @@ play_pause.onclick = function (){
         simulation.alpha(1).restart().tick();
     }
 }
+

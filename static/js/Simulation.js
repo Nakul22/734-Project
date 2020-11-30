@@ -169,10 +169,19 @@ async function run_simulation(time=null){
     }else{
       var count =0
       while(count<times.length){
+        //set delay so that user can actually view changes
         await delay(150);
+        
+        //update graph
         update(data, contains, times[count], chart)
+
+        //update date range
         dates_range.innerHTML=times[count]
         button_group.value = count
+
+        //draw heatmap
+        draw_heatmap(times[count])
+        
         count = count+1
       }
     }

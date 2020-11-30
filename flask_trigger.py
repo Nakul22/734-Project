@@ -18,9 +18,13 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 def index():
     return render_template('index.html')
 
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('pong!')
+
+@app.route('/<path:path>', methods=['GET'])
+def getFile(path):
+    """This function recieves a request for a file from the front end and returns the file if found in the back end,
+    404 error if not found"""
+    if request.method =="GET":
+        return send_from_directory(os.getcwd(), filename=path)
 
 @app.route('/create_dataset', methods=['GET'])
 def trigger_dataset():
