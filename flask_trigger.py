@@ -36,5 +36,14 @@ def trigger_dataset():
         return send_from_directory(os.getcwd(), filename='dataJson.json')
 
 
+@app.route('/getdataset', methods=['POST'])
+def get_dataset():
+    if request.method =='POST':
+        # print(request)
+        data = request.get_json()
+        path = data['time for result']+'_'+data['false_negatives']+'_'+ data['days_between_tests']+'_'+data['quarantine']+'_'+data['prob_mask']
+        return send_from_directory(os.getcwd(), filename='dataJson.json')
+
+
 if __name__ == '__main__':
     app.run()

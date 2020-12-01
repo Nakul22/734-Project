@@ -8,12 +8,12 @@
         <div class="row">
             <div class="four wide column">
                 <div id='controls'>
-                    <form class="ui form">
+                    <form class="ui form" id='usercontrols' action='/getdataset', method="POST">
                         <h4 class="ui dividing header">Testing Features</h4>
                         <div class="two fields">
                             <div class="field">
                                 <label>Time taken for results</label>
-                                <select class="ui fluid dropdown">
+                                <select class="ui fluid dropdown" name='time for result'> 
                                   <option value="8">8hrs</option>
                                   <option value="24">24hrs</option>
                                   <option value="48">48hrs</option>
@@ -23,7 +23,7 @@
                             </div>
                             <div class="field">
                                 <label>% of False Negative Results</label>
-                                <select class="ui fluid dropdown">
+                                <select class="ui fluid dropdown" name='false_negatives'>
                                   <option value="1">1%</option>
                                   <option value="5">5%</option>
                                   <option value="10">10%</option>
@@ -52,48 +52,105 @@
                         </div>
                         <div class="field">
                             <label>Prob. of Masks</label>
-                            <div class='ui input' id='mask_range'>
-                                <input type="range" min ='1' max='100', value='50' id="mask_range_input">
-                                <p id='slider_val'>50%</p>
-                                <input type='text' value='50' id='slider_value' width="10px" hidden>  
+                            <div class='ui input' id='mask_range' style="text-align: center;">
+                                <div class="inline fields">
+                                    <div class="field">
+                                      <div class="ui radio checkbox">
+                                        <input type="radio" name="prob_mask" checked="" value="25" tabindex="0" class="hidden" onclick=mask_changed>
+                                        <label>25%</label>
+                                      </div>
+                                    </div>
+                                    <div class="field">
+                                      <div class="ui radio checkbox">
+                                        <input type="radio" name="prob_mask" tabindex="1" value="50" class="hidden" onclick=mask_changed>
+                                        <label>50%</label>
+                                      </div>
+                                    </div>
+                                    <div class="field">
+                                      <div class="ui radio checkbox">
+                                        <input type="radio" name="prob_mask" tabindex="2" value="75" class="hidden" onclick=mask_changed>
+                                        <label>75%</label>
+                                      </div>
+                                    </div>
+                                    <div class="field">
+                                      <div class="ui radio checkbox">
+                                        <input type="radio" name="prob_mask" tabindex="3" value="100" class="hidden" onclick=mask_changed>
+                                        <label>100%</label>
+                                      </div>
+                                    </div>
+                                </div>
                             </div>    
                         </div>
-                        <div class="ui button" tabindex="0">Run Simulation</div>
+                        <div class="ui button" tabindex="0" id='submitbutton'>Run Simulation</div>
+                        <input type="submit" id='submit' hidden>
                     </form>
                 </div>
             </div>
             <div class="twelve wide column">
-                
-                    <div class="two fields">
-                        <label id='dates_range'>Dates</label>
-                        <div class="field">
-                            <input type="range" id="day_buttons" min=1, max=500 value="1" style="width: 500px;">
-                            </input>
-                        
+                <!-- visualization controls row -->
+                <div class="row">
+                    <div class="ui four column grid" >
+                        <!-- column for slowing down the visualization -->
+                        <div class="column">
+                          <div class="ui segment">
+                            <label style="font-size: 20px; font-weight: bold;">Speed</label>
+                            <select class="ui fluid dropdown" id='speed'> 
+                                <option value="slow">Slow</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="fast">Fast</option>
+                            </select>
+                          </div>
                         </div>
-                        
-                        <div class="field" hidden>
-                            <label>Play/Pause</label>
+
+                        <!-- column for playing/pausing the visualization -->
+                        <div class="column">
+                          <div class="ui segment">
+                            <label style="font-size: 20px; font-weight: bold;">Play/Pause</label><br/>
                             <button class="ui icon button" id='play_pause' type="button" value="pause" disabled>
                                 <i class="pause icon" id='playicon'></i>
                             </button>
+                          </div>
                         </div>
-                        
-                    </div>
 
-                <div class="ui segment" id='loader' style="height: 500px;">
-                    <div class="ui active dimmer" style="height: 500px;">
-                        <div class="ui huge text loader" style="height: 500px;">Loading</div>
-                    </div>
-                    <p></p>
+                        <!-- column for displaying dates -->
+                        <div class="column">
+                          <div class="ui segment">
+                            <label id='dates_range' style="font-size: 20px; font-weight: bold;">Dates</label>
+                            <input type="range" id="day_buttons" min=1, max=500 value="1" style="width: 300px;">
+                             </input>
+                          </div>
+                        </div>
+
+                        <!-- column for showing count of cases -->
+                        <div class="column">
+                            <div class="ui segment">
+                                <label style="font-size: 20px; font-weight: bold;">Total Cases</label>
+                                <p id='infection_counter' style="font-size: 20px; font-weight: bold;">0</p>   
+                            </div>
+                        </div>
+                      </div>
                 </div>
+
+                <!-- visualization -->
+                <div class="row">
+                    <!-- loading bar -->
+                    <div class="ui segment" id='loader' style="height: 500px;">
+                        <div class="ui active dimmer" style="height: 500px;">
+                            <div class="ui huge text loader" style="height: 500px;">Loading</div>
+                        </div>
+                        <p></p>
+                    </div>
                     
-                <div id='simulation' style="display: none; background-color: black;"></div>
+                    <!-- simulation div -->
+                    <div id='simulation' style="display: none; background-color: #E5E1E1;"></div>
+                </div>
+                
             </div>  
         </div>
     </div>
+
     <!-- grid for smaller charts -->
-    <div class="ui four column grid">
+    <div class="ui three column grid">
         <div class="row">
           <div class="column" id="heatmap">
             <h2 class="ui header" align="center" style="color: rosybrown;">Infection rates Heatmap</h2>
@@ -106,9 +163,9 @@
             <h2 class="ui header" align="center" style="color: rosybrown;">Total Cases</h2>
             <!-- Sungbok Todo -->
           </div>
-          <div class="column">
+          <!-- <div class="column">
             <h2 class="ui header" align="center" style="color: rosybrown;">Spread Probability</h2>
-          </div>
+          </div> -->
         </div>
         <div class="fullscreen modal" hidden>
             <div id="open_image">  

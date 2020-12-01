@@ -19,9 +19,9 @@ var cleaneddata_modal;
 var modal_triggered = false;
 
 // set the dimensions and margins of the graph
-var margin = {top: 30, right: 30, bottom: 30, left: 30},
-  heatmap_width = 250 - margin.left - margin.right,
-  heatmap_height = 250 - margin.top - margin.bottom;
+var margin = {top: 10, right: 30, bottom: 30, left: 30},
+  heatmap_width = 350 - margin.left - margin.right,
+  heatmap_height = 350 - margin.top - margin.bottom;
 
 // append the heatmap_svg object to the body of the page
 var heatmap_svg = d3.select("#heatmap")
