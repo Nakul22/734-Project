@@ -98,6 +98,7 @@ play_pause.onclick = function (){
         play_pause.value = 'play'
         icon.className='play icon'
         stop()
+        remove_charts();
     }else{
         play_pause.value = 'pause'
         icon.className='pause icon'
