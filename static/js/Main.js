@@ -25,14 +25,17 @@ var speed = document.getElementById('speed')
 speed.onchange = function(){
     if(speed.value ==='normal'){
         stop()
+        remove_charts();
         play_speed=1500
         restart()
     }else if(speed.value ==='fast'){
         stop()
+        remove_charts();
         play_speed=750
         restart()
     }else{
         stop()
+        remove_charts();
         play_speed=2500
         restart()
     }
