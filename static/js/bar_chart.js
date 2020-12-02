@@ -46,4 +46,10 @@ d3.csv("daily.csv").then(function (data) {
         .attr("y", function (d) { return y_bar(d.value); })
         .attr("height", function (d) { return bar_height - y_bar(d.value); });
 
+
+    bar_svg.append('g').call(d3.axisBottom(x_bar))
+    .attr("transform",
+        "translate(" + 0 + "," + bar_height + ")");
+    bar_svg.append('g').call(d3.axisLeft(y_bar));
+
 })
