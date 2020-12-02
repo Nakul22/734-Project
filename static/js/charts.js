@@ -34,8 +34,8 @@ linechart_modal.onclick = function(){
 }
 
 function draw_line_chart(file_address) {
+    
     d3.csv(file_address).then(function (data) {
-
         var line_margin = { top: 10, right: 30, bottom: 30, left: 30 },
             line_width = 350 - line_margin.left - line_margin.right,
             line_height = 350 - line_margin.top - line_margin.bottom;
@@ -64,6 +64,7 @@ function draw_line_chart(file_address) {
             d.value = +d.infection_occured;
 
         })
+        
         total_cases_count=data;
 
         x_line.domain(data.map(function (d) { return d.day; }));
@@ -279,3 +280,6 @@ function draw_line_chart_modal(file_address) {
 
 }
 
+function getTotalCases(){
+    return total_cases_count
+}

@@ -83,7 +83,7 @@ function draw_heatmap(timeperiod){
 
     currtime = timeperiod;
     var d_l = cleandata(heatmap_data, timeperiod)
-    console.log(timeperiod, d_l)
+    // console.log(timeperiod, d_l)
     //updates the main heatmap in the supplementary visualizations section
   myColor.domain([0, d3.max(d_l, function(d){
     return d.Value

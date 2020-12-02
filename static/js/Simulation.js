@@ -151,7 +151,19 @@ function create_viz(){
           ticked(); // render now
 
           //update total cases counter
-          infection_range.innerHTML= total_cases_count[times[count].getDate()]
+          var cases = getTotalCases()
+          if(cases !== undefined && cases.length>0){
+            if(paused){
+              if(cases[times[paused_count].getDate()-1] !== undefined){
+                infection_range.innerHTML= cases[times[paused_count].getDate()-1].value
+              }
+            }else{
+              if(cases[times[count].getDate()-1] !== undefined){
+                infection_range.innerHTML= cases[times[count].getDate()-1].value
+              }
+            }
+          }
+           
          
         }
 
@@ -333,6 +345,7 @@ async function stop(){
   paused_count= count
   count = times.length
   await delay(300);
+  console.log(paused_count)
   run_simulation(paused_count)
 }
 
