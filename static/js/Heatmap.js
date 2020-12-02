@@ -88,6 +88,7 @@ function draw_heatmap(timeperiod){
   update_heatmap(d)
 }
 
+/*
 function heatmap_modal(){
   //updates the visualization for the heatmap that shows up in the modal
       // set the dimensions and margins of the graph
@@ -190,7 +191,7 @@ function heatmap_modal(){
       })
   });
 }
-
+*/
 function update_heatmap(data){
   //updates the main heatmap in the supplementary visualizations section
   myColor.domain([0, d3.max(data, function(d){
