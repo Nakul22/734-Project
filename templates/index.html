@@ -221,22 +221,29 @@
         <div class="row">
           <div class="column" id="heatmap">
             <h2 class="ui header" align="center" style="color: rosybrown;">Infection rates Heatmap</h2>
+            
+          
           </div>
-          <div class="column">
+          <div class="column" id="barchart" >
             <h2 class="ui header" align="center" style="color: rosybrown;">Daily Cases</h2>
-            <!-- Sungbok Todo -->
+            <div id = "daily_bar" ></div>
           </div>
-          <div class="column">
+          <div class="column" id="linechart">
             <h2 class="ui header" align="center" style="color: rosybrown;">Total Cases</h2>
-            <!-- Sungbok Todo -->
+            <div id = "daily_total"></div>
           </div>
           <!-- <div class="column">
             <h2 class="ui header" align="center" style="color: rosybrown;">Spread Probability</h2>
           </div> -->
         </div>
-        <div class="fullscreen modal" hidden>
-            <div id="open_image">  
-            </div>
+       
+    </div>
+    <div class="ui modal" style="margin-top:100px; width: 950;">
+      <i class="close icon"></i>
+      <div class="header">
+        close
+      </div>
+        <div id="open_image">  
         </div>
     </div>
 {%endblock%}

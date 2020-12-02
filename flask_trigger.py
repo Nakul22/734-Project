@@ -25,7 +25,10 @@ def getFile(path):
     404 error if not found"""
     if request.method =="GET":
         paths=path.split('/')
-        return send_from_directory(os.getcwd()+'/datasets/'+paths[0], filename=paths[1])
+        if (paths[0] == 'daily_dataset'):
+            return send_from_directory(os.getcwd()+'/'+paths[0], filename=paths[1])
+        else:
+            return send_from_directory(os.getcwd()+'/datasets/'+paths[0], filename=paths[1])
 
 @app.route('/create_dataset', methods=['GET'])
 def trigger_dataset():

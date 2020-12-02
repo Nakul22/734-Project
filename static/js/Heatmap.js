@@ -6,7 +6,7 @@ heatmap.onclick = function(){
     //addcode to div
     heatmap_modal()
     //show modal
-    $('.fullscreen.modal').modal({
+    $('.ui.modal').modal({
       onHide:function(){
       }
     })
@@ -66,46 +66,85 @@ var tooltip = d3.select("#heatmap")
 .style("padding", "5px")
 
 
-//Read the data
-d3.csv(path+"/heatmap.csv").then(function(d) {
-  heatmap_data = cleandata(d)
-
-  //draw x axis
-  heatmap_svg.append("g")
-  .attr("transform", "translate(0," + heatmap_height + ")")
-  .call(d3.axisBottom(x))
-
-
-  //draw yaxis
-  heatmap_svg.append("g")
-  .call(d3.axisLeft(y));
-});
 
 function draw_heatmap(timeperiod){
   //given the time period, update the current view for this visualization
-  currtime = timeperiod;
-  var d = cleandata(heatmap_data, timeperiod)
-  update_heatmap(d)
+  d3.csv(path+"/heatmap.csv").then(function(d) {
+    heatmap_data = cleandata(d)
+    //draw x axis
+    heatmap_svg.append("g")
+    .attr("transform", "translate(0," + heatmap_height + ")")
+    .call(d3.axisBottom(x))
+  
+  
+    //draw yaxis
+    heatmap_svg.append("g")
+    .call(d3.axisLeft(y));
+
+    currtime = timeperiod;
+    var d_l = cleandata(heatmap_data, timeperiod)
+    console.log(timeperiod, d_l)
+    //updates the main heatmap in the supplementary visualizations section
+  myColor.domain([0, d3.max(d_l, function(d){
+    return d.Value
+  })]);
+
+  // add the squares
+  // console.log('adding squares', data)
+  var viz = heatmap_svg.selectAll('rect')
+    .data(d_l)
+  
+    //remove unneded nodes
+    viz.exit().remove();
+    
+    //create new rects
+    viz.enter()
+    .append("rect")
+      .attr("x", function(d) { 
+        return x(getDay(d.Day.getDay())) 
+      })
+      .attr("y", function(d) {
+        return y(getHour(parseInt(d.Hour))) 
+      })
+      .attr("width", x.bandwidth() )
+      .attr("height", y.bandwidth() )
+      .style("fill", function(d) { return myColor(d.Value)} )
+    .on("mouseover", function(d){
+      var value = d3.select(this).data()[0]['Value']
+      tooltip.style("opacity", 1)
+    tooltip
+      .html("Infected Persons: " + value)
+      .style("left", (d.pageX+70) + "px")
+      .style("top", (d.pageY) + "px")
+    })
+    .on("mouseleave", function(d){
+      tooltip.style('opacity',0)
+    })
+
+  });
+  
 }
 
 function heatmap_modal(){
   //updates the visualization for the heatmap that shows up in the modal
+
+    d3.select('#open_image').selectAll('*').remove(); //remove previous content of div first
       // set the dimensions and margins of the graph
-      var margin = {top: 30, right: 30, bottom: 30, left: 30},
-        heatmap_width = 950 - margin.left - margin.right,
-        heatmap_height = 950 - margin.top - margin.bottom;
+      var heatmap_modal_margin = {top: 100, right: 30, bottom: 30, left: 30},
+        heatmap_width = 950 - heatmap_modal_margin.left - heatmap_modal_margin.right,
+        heatmap_height = 950 - heatmap_modal_margin.top - heatmap_modal_margin.bottom;
 
      
-      d3.select('#open_image').selectAll('*').remove(); //remove previous content of div first
+     
       
       // append the heatmap_svg object to the body of the page
       heatmap_modal_svg = d3.select("#open_image")
       .append("svg")
-        .attr("width", heatmap_width + margin.left + margin.right)
-        .attr("height", heatmap_height + margin.top + margin.bottom)
+        .attr("width", heatmap_width + heatmap_modal_margin.left + heatmap_modal_margin.right)
+        .attr("height", heatmap_height + heatmap_modal_margin.top + heatmap_modal_margin.bottom)
       .append("g")
         .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+              "translate(" + heatmap_modal_margin.left + "," + heatmap_modal_margin.top + ")");
 
       // Labels of row and columns
       var myGroups = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -141,7 +180,7 @@ function heatmap_modal(){
       .style("padding", "5px")
 
       //Read the data
-    d3.csv("heatmap.csv").then(function(d) {  
+    d3.csv(path+"/heatmap.csv").then(function(d) {  
       cleaneddata_modal = cleandata(d)
       cleaneddata_modal = cleandata(cleaneddata_modal, currtime)
       

@@ -1,11 +1,12 @@
 
 var times, chart, contains, contains_nodes, loader, sim;
-
+var chart_date, prev_chart_date, file_name_bar, file_name_line;
 var button_group = document.getElementById('day_buttons')
 var dates_range = document.getElementById('dates_range')
 var infection_range = document.getElementById('infection_counter')
 var infected_nodes = new Set();
-
+var count =0;
+var paused_count=0;
 var simulation, drag;
 
 //utility function to force timeout
@@ -150,7 +151,7 @@ function create_viz(){
           ticked(); // render now
 
           //update total cases counter
-          infection_range.innerHTML= infected_nodes.size
+          infection_range.innerHTML= total_cases_count[times[count].getDate()]
          
         }
 
@@ -218,7 +219,8 @@ var color = d3.scaleOrdinal(d3.schemeAccent);
 function visualization(d){
     data=d
     chart = create_viz();
-
+    count=0;
+    paused_count=0;
     contains = ({start, end}, time) => start <= time && time < end
     contains_nodes = function ({start, end}, time){ 
      return start <= time && time< new Date(year = 2020, month=start.getMonth(), date=start.getDate()+1, hours=start.getHours())
@@ -229,6 +231,9 @@ function visualization(d){
     .ticks(1000)
     .filter(time => data.nodes.some(d => contains(d, time)))
     
+    d3.select('#simulation').selectAll('circle').remove();
+    d3.select('#simulation').selectAll('line').remove();
+   
     loader = document.getElementById('loader')
     loader.style.display = 'none';
 
@@ -240,7 +245,7 @@ function visualization(d){
     
     button_group.min = 0
     button_group.max= times.length-1
-
+    button_group.value=0
     play()
     
       
@@ -255,11 +260,19 @@ async function run_simulation(time=null){
       
       //draw heatmap
       draw_heatmap(times[time])
+      chart_date = times[time].getDate();
+      tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
+      tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+      file_name_bar = tem_address_bar.concat(".csv");
+      file_name_line = tem_address_line.concat(".csv");
+      draw_bar_chart(file_name_bar);
+      draw_line_chart(file_name_line);
+      prev_chart_date = chart_date;
+      //console.log(file_name_bar);
+      //console.log(file_name_line);
+      //console.log(times[time])
     } 
 }
-
-var count =0
-var paused_count=0
 
 async function play(){
   paused=false
@@ -268,15 +281,49 @@ async function play(){
     await delay(play_speed);
     
     //update graph
-    update(data, contains, times[count], chart)
+    if(count == times.length){
+      update(data, contains, times[paused_count], chart)
+    }else{
+      update(data, contains, times[count], chart)
+    }
+    
 
     //update date range
-    dates_range.innerHTML=times[count]
-    button_group.value = count
+    if(count ==times.length){
+      dates_range.innerHTML=times[paused_count]
+      button_group.value = paused_count
+    }else{
+      dates_range.innerHTML=times[count]
+      button_group.value = count
+    }
+    
 
     //draw heatmap
-    draw_heatmap(times[count])
-
+    if(count ==times.length){
+      draw_heatmap(times[paused_count])
+    }else{
+      draw_heatmap(times[count])
+    }
+   
+    //console.log(times[count].getDate());
+    if(count == times.length){
+      chart_date = times[paused_count].getDate();
+    }else{
+      chart_date = times[count].getDate();
+    }
+    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
+    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    file_name_bar = tem_address_bar.concat(".csv");
+    file_name_line = tem_address_line.concat(".csv");
+    if (chart_date != prev_chart_date) {
+      remove_charts();
+      draw_bar_chart(file_name_bar);
+      draw_line_chart(file_name_line);
+    };
+    prev_chart_date = chart_date;
+    //console.log(file_name_bar);
+    //console.log(file_name_line);
+    //console.log(times[count])
     count = count +1 
   }
 }
@@ -301,14 +348,45 @@ async function restart(){
     await delay(play_speed);
     
     //update graph
-    update(data, contains, times[count], chart)
+   //update graph
+   if(count == times.length){
+    update(data, contains, times[count-1], chart)
+    }else{
+      update(data, contains, times[count], chart)
+    }
 
     //update date range
-    dates_range.innerHTML=times[count]
-    button_group.value = count
+    if(count ==times.length){
+      dates_range.innerHTML=times[count-1]
+      button_group.value = count-1
+    }else{
+      dates_range.innerHTML=times[count]
+      button_group.value = count
+    }
 
     //draw heatmap
-    draw_heatmap(times[count])
+    if(count ==times.length){
+      draw_heatmap(times[paused_count])
+    }else{
+      draw_heatmap(times[count])
+    }
+
+    if(count == times.length){
+      chart_date = times[count-1].getDate();
+    }else{
+      chart_date = times[count].getDate();
+    }
+
+    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
+    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    file_name_bar = tem_address_bar.concat(".csv");
+    file_name_line = tem_address_line.concat(".csv");
+    if (chart_date != prev_chart_date) {
+      remove_charts();
+      draw_bar_chart(file_name_bar);
+      draw_line_chart(file_name_line);
+    };
+    prev_chart_date = chart_date;
 
     count = count +1
     

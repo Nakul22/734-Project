@@ -25,14 +25,17 @@ var speed = document.getElementById('speed')
 speed.onchange = function(){
     if(speed.value ==='normal'){
         stop()
+        remove_charts();
         play_speed=1500
         restart()
     }else if(speed.value ==='fast'){
         stop()
+        remove_charts();
         play_speed=750
         restart()
     }else{
         stop()
+        remove_charts();
         play_speed=2500
         restart()
     }
@@ -43,6 +46,8 @@ submit.onclick = function (){
     var form_data = $('#usercontrols').serializeArray()
     document.getElementById('vizspace').style.display='none'
     document.getElementById('loader').style.display='block'
+    document.getElementById('simulation').style.display='none'
+    
     //setglobal path for other visualizations
     path = form_data[4].value+'_'+ form_data[2].value+'_'+form_data[0].value+'_'+form_data[1].value+'_'+form_data[3].value
    
@@ -96,6 +101,7 @@ play_pause.onclick = function (){
         play_pause.value = 'play'
         icon.className='play icon'
         stop()
+        remove_charts();
     }else{
         play_pause.value = 'pause'
         icon.className='pause icon'
