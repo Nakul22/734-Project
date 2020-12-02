@@ -32,13 +32,17 @@ d3.csv("daily_cum.csv").then(function (data) {
     line_svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "black")
+        .attr("stroke", "#C43A3A")
         .attr("d", d3.line()
             .x(function (d) { return x_line(d.day) })
             .y(function (d) { return y_line(d.value) })
         )
     
-        line_svg.append('g').call(d3.axisBottom(x_line))
+//.tickValues(x_bar.domain().filter(function(d,i){ return !(i%5)})
+
+        line_svg.append('g').call(d3.axisBottom(x_line)
+        .tickValues(x_line.domain().filter(function(d,i){ return !(i%5)}))
+        .tickFormat(d3.timeFormat("%d")))
         .attr("transform",
             "translate(" + 0 + "," + line_height + ")");
         line_svg.append('g').call(d3.axisLeft(y_line));

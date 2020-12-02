@@ -10,10 +10,10 @@ var parseDate = d3.timeParse("%d");
 
 // set the ranges
 var x_bar = d3.scaleBand()
-          .range([0, bar_width])
-          .padding(0.1);
+    .range([0, bar_width])
+    .padding(0.1);
 var y_bar = d3.scaleLinear()
-          .range([bar_height,0]);
+    .range([bar_height, 0]);
 
 
 var bar_svg = d3.select("#daily_bar")
@@ -32,9 +32,9 @@ d3.csv("daily.csv").then(function (data) {
         d.value = +d.infection_occured;
     })
 
-    
-    x_bar.domain(data.map(function(d) { return d.day; }));
-    y_bar.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+    x_bar.domain(data.map(function (d) { return d.day; }));
+    y_bar.domain([0, d3.max(data, function (d) { return d.value; })]);
 
 
     bar_svg.selectAll(".bar")
@@ -42,14 +42,20 @@ d3.csv("daily.csv").then(function (data) {
         .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function (d) { return x_bar(d.day); })
+        .attr("fill", "#C43A3A")
         .attr("width", x_bar.bandwidth())
         .attr("y", function (d) { return y_bar(d.value); })
         .attr("height", function (d) { return bar_height - y_bar(d.value); });
 
 
-    bar_svg.append('g').call(d3.axisBottom(x_bar))
-    .attr("transform",
-        "translate(" + 0 + "," + bar_height + ")");
+    bar_svg.append('g')
+        .attr("class", "axis")
+        .attr("transform",
+            "translate(" + 0 + "," + bar_height + ")")
+        .call(d3.axisBottom(x_bar)
+        .tickValues(x_bar.domain().filter(function(d,i){ return !(i%5)}))
+        .tickFormat(d3.timeFormat("%d")));
+        
     bar_svg.append('g').call(d3.axisLeft(y_bar));
 
 })
