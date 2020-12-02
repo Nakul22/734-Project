@@ -263,8 +263,8 @@ async function run_simulation(time = null) {
     draw_bar_chart(file_name_bar);
     draw_line_chart(file_name_line);
     prev_chart_date = chart_date;
-    console.log(file_name_bar);
-    console.log(file_name_line);
+    //console.log(file_name_bar);
+    //console.log(file_name_line);
     //console.log(times[time])
   }
 }
@@ -299,8 +299,8 @@ async function play() {
       draw_line_chart(file_name_line);
     };
     prev_chart_date = chart_date;
-    console.log(file_name_bar);
-    console.log(file_name_line);
+    //console.log(file_name_bar);
+    //console.log(file_name_line);
     //console.log(times[count])
 
     count = count + 1
