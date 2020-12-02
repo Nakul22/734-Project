@@ -335,6 +335,17 @@ async function restart() {
 
     //draw heatmap
     draw_heatmap(times[count])
+    chart_date = times[count].getDate();
+    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
+    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    file_name_bar = tem_address_bar.concat(".csv");
+    file_name_line = tem_address_line.concat(".csv");
+    if (chart_date != prev_chart_date) {
+      remove_charts();
+      draw_bar_chart(file_name_bar);
+      draw_line_chart(file_name_line);
+    };
+    prev_chart_date = chart_date;
 
     count = count + 1
 
