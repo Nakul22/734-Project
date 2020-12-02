@@ -287,7 +287,7 @@ async function play() {
 
     //draw heatmap
     draw_heatmap(times[count])
-    console.log(times[count].getDate());
+    //console.log(times[count].getDate());
     chart_date = times[count].getDate();
     tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
     tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
