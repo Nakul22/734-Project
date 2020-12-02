@@ -67,7 +67,7 @@ var tooltip = d3.select("#heatmap")
 
 
 //Read the data
-d3.csv("heatmap.csv").then(function(d) {
+d3.csv(path+"/heatmap.csv").then(function(d) {
   heatmap_data = cleandata(d)
 
   //draw x axis

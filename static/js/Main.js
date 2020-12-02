@@ -1,4 +1,4 @@
-var path;
+var path = '25_1_0_1_1';
 var play_speed = 1500;
 var paused = false;
 //handle slider value changes
@@ -41,10 +41,11 @@ speed.onchange = function(){
 var submit = document.getElementById('submitbutton');
 submit.onclick = function (){
     var form_data = $('#usercontrols').serializeArray()
-
+    document.getElementById('vizspace').style.display='none'
+    document.getElementById('loader').style.display='block'
     //setglobal path for other visualizations
-    path = form_data[0].value+'_'+form_data[1].value+'_'+ form_data[2].value+'_'+form_data[3].value+'_'+form_data[4].value
-    console.log(path)
+    path = form_data[4].value+'_'+ form_data[2].value+'_'+form_data[0].value+'_'+form_data[1].value+'_'+form_data[3].value
+   
     //fetch data from backend
 fetch('/getdataset', {
     method:'POST',
@@ -72,7 +73,7 @@ fetch('/getdataset', {
                 });
             }
                     
-            // visualization(data)
+            visualization(data)
         })
     }
     else{

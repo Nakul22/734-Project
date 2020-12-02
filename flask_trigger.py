@@ -24,7 +24,8 @@ def getFile(path):
     """This function recieves a request for a file from the front end and returns the file if found in the back end,
     404 error if not found"""
     if request.method =="GET":
-        return send_from_directory(os.getcwd(), filename=path)
+        paths=path.split('/')
+        return send_from_directory(os.getcwd()+'/datasets/'+paths[0], filename=paths[1])
 
 @app.route('/create_dataset', methods=['GET'])
 def trigger_dataset():
@@ -41,8 +42,8 @@ def get_dataset():
     if request.method =='POST':
         # print(request)
         data = request.get_json()
-        path = data['time for result']+'_'+data['false_negatives']+'_'+ data['days_between_tests']+'_'+data['quarantine']+'_'+data['prob_mask']
-        return send_from_directory(os.getcwd(), filename='dataJson.json')
+        path = data['prob_mask']+'_'+data['days_between_tests']+'_'+data['time for result']+'_'+data['false_negatives']+'_'+data['quarantine']
+        return send_from_directory(os.getcwd()+'/datasets/'+path,filename='dataJson.json')
 
 
 if __name__ == '__main__':

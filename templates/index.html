@@ -14,11 +14,10 @@
                             <div class="field">
                                 <label>Time taken for results</label>
                                 <select class="ui fluid dropdown" name='time for result'> 
-                                  <option value="8">8hrs</option>
-                                  <option value="24">24hrs</option>
-                                  <option value="48">48hrs</option>
-                                  <option value="72">72hrs</option>
-                                  <option value="168">1 week</option>
+                                  <option value="0">Immediately</option>
+                                  <option value="1">24hrs</option>
+                                  <option value="3">72hrs</option>
+                                  <option value="7">1 week</option>
                                 </select>
                             </div>
                             <div class="field">
@@ -36,17 +35,16 @@
                             <div class="field">
                                 <label>Days Between Tests</label>
                                     <select class="ui fluid search dropdown" name="days_between_tests">
-                                        <option value="24">24 hours</option>
-                                        <option value="168">1 week</option>
-                                        <option value="336">2 weeks</option>
-                                        <option value="672">1 month</option>
+                                        <option value="1">24 hours</option>
+                                        <option value="7">1 week</option>
+                                        <option value="14">2 weeks</option>
                                     </select>
                             </div>
                             <div class="field">
                                 <label>Quarantine enforced</label>
                                 <select class="ui fluid search dropdown" name="quarantine">
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </div>
                         </div>
@@ -133,16 +131,85 @@
 
                 <!-- visualization -->
                 <div class="row">
-                    <!-- loading bar -->
-                    <div class="ui segment" id='loader' style="height: 500px;">
+                  <div class="ui two column grid">
+                    <div class="thirteen wide column">
+                        <!-- loading bar -->
+                        <div class="ui segment" id='loader' style="height: 500px;" hidden>
+                          <div class="ui active dimmer" style="height: 500px;">
+                              <div class="ui huge text loader" style="height: 500px;">Loading</div>
+                          </div>
+                          <p></p>
+                        </div>
+                        <div class="ui segment" id='vizspace' style="height: 500px;">
                         <div class="ui active dimmer" style="height: 500px;">
-                            <div class="ui huge text loader" style="height: 500px;">Loading</div>
+                            <div style="height: 500px; background-color:  #E5E1E1;">
+                              <h1> Select controls to start simulation</h1>
+                            </div>
                         </div>
                         <p></p>
+                        </div>
+
+                        <!-- simulation div -->
+                        <div id='simulation' style="display: none; background-color: #E5E1E1;"></div>
                     </div>
+                  <!-- legend -->
+                    <div class=" two wide column">
+                      <div class="ui vertical menu">
+                        
+                          <div style="background-color: #CBBE4B; margin-bottom: 5px;">
+                            <div class="link item" style="color:white">
+                              Tested: Awaiting Result
+                            </div>
+                          </div>
+
+                          <div style="background-color:#F32626; margin-bottom: 5px; margin-top: 5px">
+                            <div class="link item" style="color:white">
+                              Tested: True Positive
+                            </div>
+                          </div>
+                          
+                          <div style="background-color: #376C87; margin-bottom: 5px; margin-top: 5px">
+                            <div class="link item" style="color:white">
+                              Tested: False Positive
+                            </div>
+                          </div>
+
+                          <div style="background-color: #F0610F; margin-bottom: 5px; margin-top: 5px">
+                            <div class="link item" style="color:white">
+                              Tested: False Negative
+                            </div>
+                          </div>
+
+                          <div style="background-color: #38D1C2; margin-bottom: 5px; margin-top: 5px">
+                            <div class="link item" style="color:white">
+                              Tested: Negative
+                            </div>
+                          </div>
+
+                          <div style="background-color: #A60823; margin-bottom: 5px; margin-top: 5px">
+                            <div class="link item" style="color:white">
+                              Infected: Not Tested
+                            </div>
+                          </div>
+
+                          <div style="background-color: gray; margin-bottom: 5px; margin-top: 5px">
+                            <div class="link item" style="color:white">
+                              Safe
+                            </div>
+                          </div>
+                          
+                            <div class="link item" style="color:gray;">
+                              <hr style="width: 40px; height:2px; border-width:0; background-color: #999;"/> Non Masked Interaction
+                            </div>
+
+                            <div class="link item" style="color:gray;">
+                              <hr style="width: 40px; border-top:1px dashed #218295;"/> Masked Interaction
+                            </div>
+                          
+                      </div>
+                    </div>
+                  </div>
                     
-                    <!-- simulation div -->
-                    <div id='simulation' style="display: none; background-color: #E5E1E1;"></div>
                 </div>
                 
             </div>  

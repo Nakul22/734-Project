@@ -98,31 +98,31 @@ function create_viz(){
               infected_nodes.add(d.id)
               if(d.tested && d.test_result ===undefined){
                 // console.log('tested no result:',d)
-                return '#218295'
+                return '#CBBE4B'
               }else if(d.test_result && d.test_result ==='positive'){
                 // console.log('positive:',d)
                 if(d.status ==='PQ'){
-                  console.log('pq:', d)
-                  return 'blue'
+                  // console.log('pq:', d)
+                  return '#F32626'
                 }else if( d.status ==="FN"){
                   // console.log('fn:',d)
-                  return 'pink'
+                  return '#376C87'
                 }
-                return 'green'
+                return '#F32626'
               }
               else if(d.test_result && d.test_result !=='positive'){
                 // console.log('not positive:', d)
                 if(d.status ==="FN"){
                   // console.log('negative but FN')
-                  return 'orange'
+                  return '#F0610F'
                 }
-                return 'steelblue'
+                return '#38D1C2'
               }
               // console.log('only infected', d)
-              return'red'
+              return'#A60823'
             }else if(!d.infected && d.tested){
               // console.log('tested but not infected', d)
-              return 'brown'
+              return '#2C84B6'
             }
             // console.log('clean', d)
             infected_nodes.delete(d.id)
@@ -182,37 +182,37 @@ var svg = d3.select("#simulation").append('svg').attr("width", width)
 var color = d3.scaleOrdinal(d3.schemeAccent);
 
 
-//fetch data from backend
-fetch('/create_dataset', {
-    method:'GET',
-    headers: new Headers({
-        'content-type': 'application/json'
-    })
-})
-.then(function(response){
-    if(response.ok){
-        response.json().then(function(data){
+// //fetch data from backend
+// fetch('/create_dataset', {
+//     method:'GET',
+//     headers: new Headers({
+//         'content-type': 'application/json'
+//     })
+// })
+// .then(function(response){
+//     if(response.ok){
+//         response.json().then(function(data){
             
 
-            //clean up data, make dates date objects
-            for(let v in data){
-                data[v].forEach(element => {
-                    element['start'] = new Date(element['start'])
-                    element['end'] = new Date(element['end'])
-                });
-            }
+//             //clean up data, make dates date objects
+//             for(let v in data){
+//                 data[v].forEach(element => {
+//                     element['start'] = new Date(element['start'])
+//                     element['end'] = new Date(element['end'])
+//                 });
+//             }
                     
-             visualization(data)
-        })
-    }
-    else{
-        console.log('unable to fetch data')
-        return
-    }
-})
-.catch(function(error){
-    console.log('fetch error', error);
-});
+//              visualization(data)
+//         })
+//     }
+//     else{
+//         console.log('unable to fetch data')
+//         return
+//     }
+// })
+// .catch(function(error){
+//     console.log('fetch error', error);
+// });
 
 
 function visualization(d){
