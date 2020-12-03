@@ -10,5 +10,4 @@ The novel Coronavirus Disease 2019 (COVID-19) brought the world to an almost com
   * The app should be served on localhost:5000
   * Navigate to a web browser of your choice and in a new tab open http://localhost:5000/ to view the application
   
-Enjoy!
 Authors: Hannah Bako, Nakul Garg, Saeed Hadadan, Sungbok Shin
