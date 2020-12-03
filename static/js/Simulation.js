@@ -98,34 +98,22 @@ function create_viz(){
             if(d.infected){
               infected_nodes.add(d.id)
               if(d.tested && d.test_result ===undefined){
-                // console.log('tested no result:',d)
+                
                 return '#CBBE4B'
               }else if(d.test_result && d.test_result ==='positive'){
-                // console.log('positive:',d)
+                
                 if(d.status ==='PQ'){
-                  // console.log('pq:', d)
+                  
                   return '#F32626'
-                }else if( d.status ==="FN"){
-                  // console.log('fn:',d)
-                  return '#376C87'
                 }
-                return '#F32626'
-              }
-              else if(d.test_result && d.test_result !=='positive'){
-                // console.log('not positive:', d)
                 if(d.status ==="FN"){
-                  // console.log('negative but FN')
                   return '#F0610F'
                 }
-                return '#38D1C2'
+                
               }
-              // console.log('only infected', d)
               return'#A60823'
-            }else if(!d.infected && d.tested){
-              // console.log('tested but not infected', d)
-              return '#2C84B6'
             }
-            // console.log('clean', d)
+            
             infected_nodes.delete(d.id)
             return "gray"
           })
@@ -134,8 +122,12 @@ function create_viz(){
             .data(links, d => [d.source, d.target])
             .join(enter => enter.append("line")
               .attr("stroke", function(d){
-                if(d.masked)
+                if(d.infection_occured){
+                  return '#FF0000'
+                }
+                if(d.masked){
                   return '#218295'
+                }
                 return "#999"
               })
               .style('stroke-dasharray', function(d){
