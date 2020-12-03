@@ -265,8 +265,8 @@ async function run_simulation(time=null){
       //draw heatmap
       draw_heatmap(times[time])
       chart_date = times[time].getDate();
-      tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
-      tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+      tem_address_bar = 'datasets/' + path + '/' + "daily_dataset/daily_".concat(chart_date.toString());
+      tem_address_line = 'datasets/' +path + '/' + "daily_dataset/daily_cum_".concat(chart_date.toString());
       file_name_bar = tem_address_bar.concat(".csv");
       file_name_line = tem_address_line.concat(".csv");
       draw_bar_chart(file_name_bar);
@@ -315,8 +315,8 @@ async function play(){
     }else{
       chart_date = times[count].getDate();
     }
-    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
-    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    tem_address_bar = 'datasets/' +path + '/' + "daily_dataset/daily_".concat(chart_date.toString());
+    tem_address_line = 'datasets/' +path + '/' + "daily_dataset/daily_cum_".concat(chart_date.toString());
     file_name_bar = tem_address_bar.concat(".csv");
     file_name_line = tem_address_line.concat(".csv");
     if (chart_date != prev_chart_date) {
@@ -382,8 +382,8 @@ async function restart(){
       chart_date = times[count].getDate();
     }
 
-    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
-    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    tem_address_bar = 'datasets/' +path + '/' + "daily_dataset/daily_".concat(chart_date.toString());
+    tem_address_line = 'datasets/' +path + '/' + "daily_dataset/daily_cum_".concat(chart_date.toString());
     file_name_bar = tem_address_bar.concat(".csv");
     file_name_line = tem_address_line.concat(".csv");
     if (chart_date != prev_chart_date) {
