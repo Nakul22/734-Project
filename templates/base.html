@@ -11,20 +11,33 @@
                color: rosybrown;
                font-size: large;
                padding: 25px;
-            } 
+            }
+
+            footer {
+                background-color: #fff;
+            }
         </style>
     </head>
     <body>
         {% block body %}
 
         {% endblock %}
+        <footer style="text-align: left;">
+            <h1 >Disclaimer</h1>
+            <p>This simulation only provides an example of how COVID-19 will spread in a community. Our results
+                are meant to inform the public of how policies and their personal choices will affect others and do not reflect any scientific facts.
+            </p>
+        </footer>
     </body>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
-    <script src="{{url_for('static', filename='js/Main.js')}}"></script>
-    <script src="{{url_for('static', filename='js/Simulation.js')}}"></script>
-    <script src="{{url_for('static', filename='js/Heatmap.js')}}"></script>
-    <script src="{{url_for('static', filename='js/charts.js')}}"></script>
+   
+            <script src="https://d3js.org/d3.v6.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+        <script src="{{url_for('static', filename='js/Main.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Simulation.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Heatmap.js')}}"></script>
+        <script src="{{url_for('static', filename='js/charts.js')}}"></script>
+   
+   
 
 </html>

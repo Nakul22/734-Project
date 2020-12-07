@@ -8,6 +8,8 @@ var infected_nodes = new Set();
 var count =0;
 var paused_count=0;
 var simulation, drag;
+var selected_node;
+var linkedByIndex = {};
 
 //utility function to force timeout
 const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -71,6 +73,48 @@ function create_viz(){
           .on("drag", dragged)
           .on("end", dragended);
     }
+
+    function clicked(d){
+      //d is the actual mouseclick event
+    //  console.log()
+      
+      if(!d3.select(this).attr('classed')){
+        
+         //get the selected node
+        d3.select(this).attr('classed', true)
+        selected_node = d3.select(this).data();
+      
+        //highlight the links for the connected node.
+        link.style("opacity", function(o) {
+          return connected_links(o) ? 1 : 0.25;
+        });
+        node.style("opacity", function(o) {
+          if(o.id == selected_node[0].id){
+            return 1
+          }
+          return neighboring(o, selected_node) ? 1 : 0.25;
+        });
+      }else{
+        selected_node=null;
+        d3.select(this).attr('classed', null)
+        link.style("opacity", 1);
+        node.style("opacity", 1);
+      }
+      
+    }
+
+    function connected_links(c_link){
+      return c_link.source.id === selected_node[0].id || c_link.target.id === selected_node[0].id
+    }
+
+    function neighboring(a, b) {
+      if(a.id < b[0].id){
+        return linkedByIndex[a.id + "," + b[0].id];
+      }else{
+        return linkedByIndex[b[0].id + "," + a.id];
+      }
+      
+    }
     return Object.assign(svg.node(), {
         update({nodes, links}) {
           // Make a shallow copy to protect against mutation, while
@@ -87,8 +131,18 @@ function create_viz(){
             .join(enter => enter.append("circle")
               .attr("r", 8)
               .style('fill', 'grey')
+              .style('opacity', function(d){
+                if(selected_node){
+                  if(d.id == selected_node[0].id){
+                    return 1
+                  }
+                  return neighboring(d, selected_node) ? 1 : 0.25;
+                }
+                return 1
+              })
               .call(drag(simulation))
-              .call(node => node.append("title").text(d => d.id)));
+              .call(node => node.append("title").text(d => d.id)))
+              .on('click', clicked);
           
           wait()
           svg.selectAll('circle')
@@ -116,8 +170,19 @@ function create_viz(){
             
             infected_nodes.delete(d.id)
             return "gray"
-          })
-    
+          });
+
+          //reset link by index so it stores links for every time step
+          linkedByIndex = {}
+          links.forEach(function(d) {
+            if(d.source<d.target){
+              linkedByIndex[d.source + "," + d.target] = 1;
+            }else{
+              linkedByIndex[d.target + "," + d.source] = 1;
+            }
+            
+          });
+
           link = link
             .data(links, d => [d.source, d.target])
             .join(enter => enter.append("line")
@@ -134,6 +199,12 @@ function create_viz(){
                 if(d.masked)
                   return ('3,3')
                 return "#999"
+              })
+              .style('opacity', function(d){
+                if(selected_node){
+                  return connected_links(d) ? 1 : 0.25;
+                }
+                return 1
               })
             );
     
@@ -155,8 +226,6 @@ function create_viz(){
               }
             }
           }
-           
-         
         }
 
 
@@ -185,39 +254,6 @@ var svg = d3.select("#simulation").append('svg').attr("width", width)
 .append("g")
 
 var color = d3.scaleOrdinal(d3.schemeAccent);
-
-
-// //fetch data from backend
-// fetch('/create_dataset', {
-//     method:'GET',
-//     headers: new Headers({
-//         'content-type': 'application/json'
-//     })
-// })
-// .then(function(response){
-//     if(response.ok){
-//         response.json().then(function(data){
-            
-
-//             //clean up data, make dates date objects
-//             for(let v in data){
-//                 data[v].forEach(element => {
-//                     element['start'] = new Date(element['start'])
-//                     element['end'] = new Date(element['end'])
-//                 });
-//             }
-                    
-//              visualization(data)
-//         })
-//     }
-//     else{
-//         console.log('unable to fetch data')
-//         return
-//     }
-// })
-// .catch(function(error){
-//     console.log('fetch error', error);
-// });
 
 
 function visualization(d){
@@ -264,11 +300,11 @@ async function run_simulation(time=null){
       
       //draw heatmap
       draw_heatmap(times[time])
-      chart_date = times[time].getDate();
-      tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
-      tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
-      file_name_bar = tem_address_bar.concat(".csv");
-      file_name_line = tem_address_line.concat(".csv");
+      // chart_date = times[time].getDate();
+      // tem_address_bar = path+"/daily".concat(chart_date.toString());
+      // tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+      file_name_bar = path + "/daily.csv";
+      file_name_line = path+"/daily_cum.csv";
       draw_bar_chart(file_name_bar);
       draw_line_chart(file_name_line);
       prev_chart_date = chart_date;
@@ -315,10 +351,10 @@ async function play(){
     }else{
       chart_date = times[count].getDate();
     }
-    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
-    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
-    file_name_bar = tem_address_bar.concat(".csv");
-    file_name_line = tem_address_line.concat(".csv");
+    // tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
+    // tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    file_name_bar = path + "/daily.csv";
+    file_name_line = path+"/daily_cum.csv";
     if (chart_date != prev_chart_date) {
       remove_charts();
       draw_bar_chart(file_name_bar);
@@ -382,10 +418,10 @@ async function restart(){
       chart_date = times[count].getDate();
     }
 
-    tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
-    tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
-    file_name_bar = tem_address_bar.concat(".csv");
-    file_name_line = tem_address_line.concat(".csv");
+    // tem_address_bar = "daily_dataset/daily_".concat(chart_date.toString());
+    // tem_address_line = "daily_dataset/daily_cum_".concat(chart_date.toString());
+    file_name_bar = path + "/daily.csv";
+    file_name_line = path+"/daily_cum.csv";
     if (chart_date != prev_chart_date) {
       remove_charts();
       draw_bar_chart(file_name_bar);
