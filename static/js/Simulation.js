@@ -38,6 +38,13 @@ function create_viz() {
     .attr("stroke-width", 1.5)
     .selectAll("circle");
 
+  var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("opacity", 0)
+    .text("a simple tooltip");
+
   function ticked() {
     node.attr("cx", d => d.x)
       .attr("cy", d => d.y);
@@ -84,6 +91,15 @@ function create_viz() {
       d3.select(this).attr('classed', true)
       selected_node = d3.select(this).data();
 
+      //show tooltip
+      tooltip
+          .transition()
+          .duration(500)
+          .text('Person: '+ selected_node[0].id)
+          .style('opacity', 1)
+          .style("top", (d.pageY-10)+"px")
+          .style("left",(d.pageX+10)+"px");
+
       //highlight the links for the connected node.
       link.style("opacity", function (o) {
         return connected_links(o) ? 1 : 0.25;
@@ -99,6 +115,8 @@ function create_viz() {
       d3.select(this).attr('classed', null)
       link.style("opacity", 1);
       node.style("opacity", 1);
+
+      tooltip.text('Click Me').style('opacity', 0)
     }
 
   }
@@ -142,7 +160,21 @@ function create_viz() {
           })
           .call(drag(simulation))
           .call(node => node.append("title").text(d => d.id)))
-        .on('click', clicked);
+        .on('click', clicked)
+        .on('mouseover', function(d){
+          tooltip.text('Click Me').style('opacity', 1)
+        })
+        .on('mousemove', function(d){
+          tooltip.text('Click Me');
+          var p = d3.select(this).data()
+          tooltip
+          .style('opacity', 1)
+          .style("top", (d.pageY-10)+"px")
+          .style("left",(d.pageX+10)+"px");
+        })
+        .on('mouseout', function(d){
+          tooltip.style('opacity', 0)
+        });
 
       wait()
       svg.selectAll('circle')
@@ -300,13 +332,11 @@ async function run_simulation(time = null) {
 
     //draw heatmap
     draw_heatmap(times[time])
-    // chart_date = times[time].getDate();
+    chart_date = times[time].getDate();
     tem_address_bar = "/daily_".concat(chart_date.toString()) + ".csv";
     tem_address_line = "/daily_cum_".concat(chart_date.toString()) + ".csv";
     file_name_bar = path + tem_address_bar;
     file_name_line = path + tem_address_line;
-    console.log(file_name_bar)
-    console.log(file_name_line)
     draw_bar_chart(file_name_bar);
     draw_line_chart(file_name_line);
     
@@ -358,8 +388,7 @@ async function play() {
     tem_address_line = "/daily_cum_".concat(chart_date.toString()) + ".csv";
     file_name_bar = path + tem_address_bar;
     file_name_line = path + tem_address_line;
-    console.log(file_name_bar)
-    console.log(file_name_line)
+   
     if (chart_date != prev_chart_date) {
       remove_charts();
       draw_bar_chart(file_name_bar);
@@ -427,8 +456,7 @@ async function restart() {
     tem_address_line = "/daily_cum_".concat(chart_date.toString()) + ".csv";
     file_name_bar = path + tem_address_bar;
     file_name_line = path + tem_address_line;
-    console.log(file_name_bar)
-    console.log(file_name_line)
+    
     if (chart_date != prev_chart_date) {
       remove_charts();
       draw_bar_chart(file_name_bar);
