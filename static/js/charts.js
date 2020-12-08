@@ -1,5 +1,5 @@
 // Code by Sungbok Shin, D3, V6 Line Chart
-var total_cases_count;
+var total_cases_count =0;
 function remove_charts() {
     document.getElementById("daily_bar").innerHTML="";
     document.getElementById("daily_total").innerHTML="";
@@ -62,10 +62,11 @@ function draw_line_chart(file_address) {
         data.forEach(function (d) {
             d.day = parseDate(d.day);
             d.value = +d.infection_occured;
-
+            infection_range.innerHTML = d.value
+            total_cases_count = d.value;
         })
         
-        total_cases_count=data;
+        
 
         x_line.domain(data.map(function (d) { return d.day; }));
         y_line.domain([0, d3.max(data, function (d) { return d.value; })]);
@@ -280,6 +281,14 @@ function draw_line_chart_modal(file_address) {
 
 }
 
-function getTotalCases(){
-    return total_cases_count
-}
+// function getTotalCases(time){
+//     console.log(total_cases_count)
+//     var t = time.getDate()-1
+//     // console.log(t)
+//     if(total_cases_count){
+//         // console.log(total_cases_count)
+//         // console.log(total_cases_count[t])
+//         return total_cases_count
+//     }
+//     return 0
+// }

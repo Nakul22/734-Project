@@ -246,18 +246,19 @@ function create_viz() {
       ticked(); // render now
 
       //update total cases counter
-      var cases = getTotalCases()
-      if (cases !== undefined && cases.length > 0) {
-        if (paused) {
-          if (cases[times[paused_count].getDate() - 1] !== undefined) {
-            infection_range.innerHTML = cases[times[paused_count].getDate() - 1].value
-          }
-        } else {
-          if (cases[times[count].getDate() - 1] !== undefined) {
-            infection_range.innerHTML = cases[times[count].getDate() - 1].value
-          }
-        }
-      }
+      // var cases = getTotalCases(times[count])
+      // console.log(cases)
+      
+        // if (paused) {
+        //   if(getTotalCases(times[paused_count]) !==0){
+        //     infection_range.innerHTML = getTotalCases(times[paused_count])
+        //   }
+        // } else {
+        //   if(getTotalCases(times[count]) !==0){
+        //     infection_range.innerHTML = getTotalCases(times[count]) 
+        //   }
+        // }
+      
     }
 
 
@@ -407,7 +408,6 @@ async function stop() {
   paused_count = count
   count = times.length
   await delay(300);
-  console.log(paused_count)
   run_simulation(paused_count)
 }
 
