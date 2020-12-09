@@ -6,11 +6,10 @@
         <link rel='stylesheet' href="{{url_for('static', filename='css/range.css')}}"></link>
         <style>
            body {
-               background-color: whitesmoke;
+               background-color: #fff;
                text-align: center;
-               color: rosybrown;
-               font-size: large;
-               padding: 25px;
+               font-size:x-large;
+               padding: 100px;
             }
 
             footer {
@@ -19,11 +18,19 @@
         </style>
     </head>
     <body>
+        <img src="{{url_for('static', filename='images/covid.png')}}" alt='COVID-19'>
+        <p class="ui header" align="center" style="color: #E93A34; font-size:xx-large;">How Covid-19 Propagates within a community (Simulation)</p>
+        <p style="color: #E93A34; font-size:x-large;">Saeed Hadadan, Sungbok Shin, Nakul Garg, Hannah Bako</p>
+        <p style="padding: 50px; font-size:x-large;">
+            The novel Coronavirus Disease 2019 (COVID-19) brought the world to an almost complete halt in the first and second quarters of 2020. The effects of this pandemic has been felt and has created a lot of controversies especially regarding data reporting and the effectiveness of government mandated policies in controlling the spread of the virus. 
+            In this project we embark on understanding these controversies by using real-world data on physical human interaction to simulate the effects of these policies with respect to controlling the spread of the virus. 
+            We provide an interface where you can microscopically visualize how COVID-19 is propagated in a community and your personal choices (e.g., masking, testing, quarantining, etc.) affect the propagation of this virus.
+        </p>
         {% block body %}
 
         {% endblock %}
         <footer style="text-align: left;">
-            <h1 >Disclaimer</h1>
+            <h1 style="color: #E93A34;">Disclaimer</h1>
             <p>This simulation only provides an example of how COVID-19 will spread in a community. Our results
                 are meant to inform the public of how policies and their personal choices will affect others and do not reflect any scientific facts.
             </p>

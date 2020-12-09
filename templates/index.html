@@ -2,17 +2,18 @@
 
 {% block body%}
     
-    <h1 class="ui header" align="center" style="color: rosybrown;">Covid-19 Propagation Simulation</h1>
+   
     <div class="ui divider"></div>
     <div class="ui two column padded grid">
         <div class="row">
             <div class="four wide column">
                 <div id='controls'>
                     <form class="ui form" id='usercontrols' action='/getdataset', method="POST">
-                        <h4 class="ui dividing header">Testing Features</h4>
+                        <p class="ui dividing header" style="color: #E93A34; font-size:x-large;">Testing Features</p>
+                        <p style="font-size:larger; text-align:justify;">Use these to control the time taken for results to be recieved by people in the simulation and the percentage of those results that are false_negatives </p>
                         <div class="two fields">
                             <div class="field">
-                                <label>Time taken for results</label>
+                                <label style="color: #E93A34; font-size:large;">Time taken for results</label>
                                 <select class="ui fluid dropdown" name='time for result'> 
                                   <option value="0">Immediately</option>
                                   <option value="1" selected>24hrs</option>
@@ -21,7 +22,7 @@
                                 </select>
                             </div>
                             <div class="field">
-                                <label>% of False Negative Results</label>
+                                <label style="color: #E93A34; font-size:large;">% of False Negative Results</label>
                                 <select class="ui fluid dropdown" name='false_negatives'>
                                   <option value="1" selected>1%</option>
                                   <option value="5">5%</option>
@@ -30,10 +31,13 @@
                             </div>
                         </div>
 
-                        <h4 class="ui dividing header">Personal Measures</h4>
+                        <p class="ui dividing header" style="color: #E93A34; font-size:x-large;">Personal Measures</p>
+                        <p style="text-align: justify; font-size:large;">Use these to determine what personal measures people take. <br> <b>Days between tests</b> determines how long people wait before getting tested. 
+                        <br><b>Quarantine enforced</b> determines if people quarantine after recieving positive tests
+                        <br><b>Probability of Masks</b> determines how many of the interactions involve people wearing masks </p>
                         <div class="two fields">
                             <div class="field">
-                                <label>Days Between Tests</label>
+                                <label style="color: #E93A34; font-size:large;">Days Between Tests</label>
                                     <select class="ui fluid search dropdown" name="days_between_tests">
                                         <option value="1">24 hours</option>
                                         <option value="7"selected>1 week</option>
@@ -41,7 +45,7 @@
                                     </select>
                             </div>
                             <div class="field">
-                                <label>Quarantine enforced</label>
+                                <label style="color: #E93A34; font-size:large;">Quarantine enforced</label>
                                 <select class="ui fluid search dropdown" name="quarantine">
                                     <option value="1" selected>Yes</option>
                                     <option value="0">No</option>
@@ -49,11 +53,11 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label>Prob. of Masks</label>
-                            <div class='ui input' id='mask_range' style="text-align: center;">
-                                <div class="inline fields">
+                            <label style="color: #E93A34; font-size:large;">Prob. of Masks</label>
+                            <div class='ui input' id='mask_range' style="text-align: center; align-items: center;">
+                                <div class="inline fields" >
                                     <div class="field">
-                                      <div class="ui radio checkbox">
+                                      <div class="ui radio checkbox" >
                                         <input type="radio" name="prob_mask" checked="" value="25" tabindex="0" class="hidden" onclick=mask_changed>
                                         <label>25%</label>
                                       </div>
@@ -220,16 +224,18 @@
     <div class="ui three column grid">
         <div class="row">
           <div class="column" id="heatmap">
-            <h2 class="ui header" align="center" style="color: rosybrown;">Infection rates Heatmap</h2>
+            <h2 class="ui header" align="center" style="color: #E93A34;">Infection rates</h2>
             
-          
+            <p style="font-size: medium; text-align: justify;">Describes the infection rate broken down by hours for each day of the week to highlight what times of the day most infections occur</p>
           </div>
           <div class="column" id="barchart" >
-            <h2 class="ui header" align="center" style="color: rosybrown;">Daily Cases</h2>
+            <h2 class="ui header" align="center" style="color: #E93A34;">Daily Cases</h2>
+            <p style="font-size: medium;">Describes the number of daily infections that occur</p>
             <div id = "daily_bar" ></div>
           </div>
           <div class="column" id="linechart">
-            <h2 class="ui header" align="center" style="color: rosybrown;">Total Cases</h2>
+            <h2 class="ui header" align="center" style="color: #E93A34;">Total Cases</h2>
+            <p style="font-size: medium;">Describes the total number of infections recorded</p>
             <div id = "daily_total"></div>
           </div>
           <!-- <div class="column">
@@ -238,6 +244,7 @@
         </div>
        
     </div>
+    
     <div class="ui modal" style="margin-top:100px; width: 950;">
       <i class="close icon"></i>
       <div class="header">
